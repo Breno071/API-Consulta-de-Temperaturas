@@ -1,22 +1,16 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.IO;
 using TesteTecnico_.NET.Data;
 
 namespace TesteTecnico_.NET
 {
-  public class Startup
+    public class Startup
   {
     public Startup(IConfiguration configuration)
     {
@@ -44,8 +38,9 @@ namespace TesteTecnico_.NET
         c.SwaggerDoc("v1", new OpenApiInfo { Title = "TesteTecnico_.NET", Version = "v1" });
       });
 
-      services.AddDbContext<ApplicationDbContext>(options =>
-              options.UseInMemoryDatabase("Consultas"));
+            var path = Directory.GetCurrentDirectory();
+       services.AddDbContext<ApplicationDbContext>(options =>
+                    options.UseSqlite($"Data Source={path}\\app.db"));
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
